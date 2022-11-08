@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { initializeApp } from "firebase/app"
-import { getAuth,signInWithEmailAndPassword } from "firebase/auth"
+import { getAuth,signInWithEmailAndPassword, GoogleAuthProvider, 
+    signInWithPopup } from "firebase/auth"
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0n9g3eSSAy7ozrF317mYvjPkF1wi_KCc",
@@ -24,6 +25,15 @@ export default function Login({ setUser }) {
         .catch(alert); // line to sign us in
         setUser(response.user)
     }
+    const handleGoogleLogin = async ( ) => {
+        const app = initializeApp(firebaseConfig) //connects to firebase
+        const auth = getAuth(app) //connects us to Firebase auth
+        const provider = new GoogleAuthProvider()
+        const response = await signInWithPopup(auth, provider)
+        .catch(alert); // line to sign us in
+        setUser(response.user)
+
+    }
     return (
         <>
         <h1>Login</h1>
@@ -40,6 +50,8 @@ export default function Login({ setUser }) {
                 </label><br />
                 <button type="submit">Login</button>
             </form>
+            <br />
+            <button onClick={handleGoogleLogin}>Sign in with Google</button>
         </>
     )
 }
